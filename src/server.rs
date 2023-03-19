@@ -1,7 +1,6 @@
 use std::collections::HashMap;
-use std::fmt::Display;
 
-use crate::request::{Request, RequestType};
+use crate::request::{Request, RequestType, Path};
 use crate::service::{BoxedService, HttpStatus, FromPayload, Payload};
 use crate::handler::{Factory, Handler};
 
@@ -56,24 +55,5 @@ impl Server {
 
         let payload = Payload::from_bytes(&request.payload);
         Ok(service.handle(payload).into())
-    }
-}
-
-#[derive(PartialEq, Eq, Hash, Debug)]
-pub struct Path {
-    p: String,
-}
-
-impl Display for Path {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "{}", self.p)
-    }
-}
-
-impl<T> From<T> for Path 
-    where T: Into<String>
-{
-    fn from(value: T) -> Self {
-        Path { p: value.into() }
     }
 }
